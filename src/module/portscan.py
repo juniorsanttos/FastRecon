@@ -23,7 +23,7 @@ def port_scan_range(host, start_port, end_port):
 
         for port in range(start_port, end_port + 1): #itera sobre o intervalo de portas fornecido
             
-            future.append(ex.submit(port_scan, host, port)) #envia a função de varredura de porta para execução em uma thread
+            futures.append(ex.submit(port_scan, host, port)) #envia a função de varredura de porta para execução em uma thread
         
 
         for f in as_completed(futures): #lida com os resultados das threads conforme elas terminam
