@@ -6,18 +6,18 @@ def port_scan(host, port):
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock: #cria um socket TCP/IP
 
-        sock.settimeout(1) #define um tempo limite para a conexão
+        sock.settimeout(2) #define um tempo limite para a conexão
 
         result = sock.connect_ex((host, port)) #tenta conectar ao host e porta especificados
 
         if result == 0: #se a conexão for bem-sucedida, a porta está aberta
             return port #retorna a porta aberta encontrada
 
-def port_scan_range(host, start_port, end_port):
+def port_scan_range(host, start_port, end_port, max_threads):
 
     open_ports = [] #lista para armazenar as portas abertas encontradas
 
-    with ThreadPoolExecutor(max_workers=150) as ex:
+    with ThreadPoolExecutor(max_workers=max_threads) as ex:
         
         futures = [] #lista para armazenar os objetos Future retornados pela execução das threads
 
@@ -33,4 +33,4 @@ def port_scan_range(host, start_port, end_port):
             if result:
                 open_ports.append(result) #se a porta estiver aberta, adiciona à lista de portas abertas
 
-    return open_ports.sort() #retorna a lista de portas abertas encontradas
+    return sorted(open_ports) #retorna a lista de portas abertas encontradas
