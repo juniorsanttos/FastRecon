@@ -2,6 +2,10 @@ import sys
 from utils import validator
 from module import dns,portscan
 
+
+#Variaveis
+target_host = None
+
 #Coletando Entrada Do Usuário
 try:
     host = sys.argv[1] #coleta entrada do usuário via linha de comando
@@ -25,14 +29,15 @@ if not valid_port: #se as portas não forem válidas, exibe uma mensagem de erro
 
 if ip_valid:
     print(f"[+] IPv4 Detectado: {host}")
+    target_host = host #define o host alvo como o endereço IP fornecido
 
 elif hostname_valid:
     print(f"[+] Hostname Detectado: {host}")
     
-    ip_address = dns.resolver_dns(host) #tenta resolver o hostname para um endereço IP usando a função do módulo dns
-    
-    if ip_address: #se a resolução for bem-sucedida, exibe o endereço IP resolvido
-        print(f"[+] Endereço IP Resolvido: {ip_address}")
+    target_host = dns.resolver_dns(host) #define o host alvo como o endereço IP resolvido
+
+    if target_host: #se a resolução for bem-sucedida, exibe o endereço IP resolvido
+        print(f"[+] Endereço IP Resolvido: {target_host}")
     
     else: 
         print("[-] Falha ao resolver o hostname.")
@@ -41,8 +46,8 @@ else:
     print("[-] Por favor, forneça um endereço IP ou hostname válido.")
     sys.exit(1)
 
-#Scaneando Portas
-open_ports = portscan.port_scan(host, start_port, end_port) #realiza a varredura de portas usando a função do módulo portscan
+#Scaneando Portas Utilizando Threading
+ports = portscan.port_scan_range(target_host, start_port, end_port) #realiza a varredura de portas usando a função do módulo portscan
 
-for port in open_ports: #exibe as portas abertas encontradas
+for port in ports: #exibe as portas abertas encontradas
     print(f"[+] Porta Aberta: {port}")

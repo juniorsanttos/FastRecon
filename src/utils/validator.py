@@ -1,6 +1,7 @@
-def is_valid_ip(host):
-    from ipaddress import ip_address #importa a função para validar endereços IP
+from ipaddress import ip_address #importa a função para validar endereços IP
 
+
+def is_valid_ip(host):
     try:
         ip_address(host) #tenta validar o host como um endereço IP
         return True
