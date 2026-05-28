@@ -27,7 +27,12 @@ try:
         print("[-] O número máximo de threads permitido é 400. Usando 400 threads.")
         max_threads = 400
 
+    elif int(sys.argv[4]) < 150: #Limita o número mínimo de threads para evitar erros de execução
+        print("[-] O número mínimo de threads permitido é 150. Usando 150 threads.")
+        max_threads = 150
+
 except (IndexError, ValueError): #Caso o usuário não forneça um número válido de threads, exibe uma mensagem de aviso e continua com o valor padrão
+    print("[-] Número de threads não fornecido ou inválido. Usando o valor padrão de 150 threads.")
     pass
 
 
